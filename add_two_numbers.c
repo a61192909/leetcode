@@ -14,44 +14,35 @@ struct ListNode* addTwoNumbers(struct ListNode* l1, struct ListNode* l2) {
 
     head = output = malloc(sizeof(struct ListNode));
 
-    do {
-        if (l1_zero_bit)
-            l1_num = 0;
-        else
-            l1_num = l1->val;
-        if (l2_zero_bit)
-            l2_num = 0;
-        else
-            l2_num = l2->val;
+    while (1) {
+        l1_num = l1_zero_bit ? 0: l1->val;
+        l2_num = l2_zero_bit ? 0: l2->val;
         output->val = l1_num + l2_num + ten_num;
 
         ten_num = output->val / 10;
         output->val = output->val % 10;
 
-        // check l1 whether it's end or not
-        if (l1->next == NULL) {
-            l1_zero_bit = true;
-        } else {
+        if (l1)
             l1 = l1->next;
-        }
-
-        // check l2 whether it's end or not
-        if (l2->next == NULL) {
-            l2_zero_bit = true;
-        } else {
+        if (l2)
             l2 = l2->next;
-        }
-
-        // check function whether it's end or not
-        if ((l1->next == NULL) && (l2->next == NULL) && !ten_num) {
-            output->next = NULL;
-            break;
-        } 
 
         // go to next node
-        output->next = malloc(sizeof(struct ListNode));
-        output = output->next;
-    } while (1);
+        if (!l1 && !l2 && !ten_num) {
+            output->next = NULL;
+            break;
+        } else {
+            output->next = malloc(sizeof(struct ListNode));
+            output = output->next;
+        }
+
+        // check l1 whether it's end or not
+        l1_zero_bit = l1? false: true;
+
+        // check l2 whether it's end or not
+        l2_zero_bit = l2? false: true;
+
+    }
     
     return head;
 }
